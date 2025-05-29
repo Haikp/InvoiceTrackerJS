@@ -10,28 +10,28 @@ const invoiceSchema = new mongoose.Schema({
         required: true
     },
     subtotal: {
-        type: Float32Array,
+        type: Number,
         required: true
     },
     // is there a percentage on this?
     shipping: {
-        type: Float32Array,
+        type: Number,
         required: true
     },
     //same thing, i can just do the math here
     tax: {
-        type: Float32Array,
+        type: Number,
         requred: true
     },
     // same thing
     total: {
-        type: Float32Array,
+        type: Number,
         required: true
     }
 }, {
     timestamps: true
 })
 
-const Invoice = mongoose.model('Invoice', invoiceSchema);
+const Invoice = mongoose.model('Invoice', invoiceSchema, 'invoices');
 
 export default Invoice;
