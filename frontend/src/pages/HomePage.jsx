@@ -1,17 +1,18 @@
 import { Container, Flex, Grid, GridItem, SimpleGrid, Text, VStack } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useProductStore } from '../store/product'
+import { useInvoiceStore } from '../store/invoice'
 import SearchBar from '../components/SearchBar'
 import { gridColumnSizes, gridRowSizes, searchBarHeight } from '../components/LayoutConfig'
+import InvoiceTable from '../components/InvoiceTable'
 
 const HomePage = () => {
-  const { fetchProducts, products } = useProductStore();
+  const { fetchInvoices, invoices } = useInvoiceStore();
 
   useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
-  console.log("products", products);
+    fetchInvoices();
+  }, [fetchInvoices]);
+  console.log("invoices", invoices);
 
   return (
     <Grid
@@ -55,7 +56,7 @@ const HomePage = () => {
         Nav
       </GridItem>
       <GridItem pl='2' bg='green.300' area={'main'} >
-        Main
+        {/* <InvoiceTable invoices={invoices} /> */}
       </GridItem>
       <GridItem pl='2' bg='blue.300' area={'footer'}>
         Footer

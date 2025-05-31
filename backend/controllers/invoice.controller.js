@@ -3,7 +3,7 @@ import Invoice from "../models/invoice.model.js"
 
 export const getInvoices = async (req, res) => {
     try {
-        const invoices = Invoice.find({});
+        const invoices = await Invoice.find({});
         res.status(200).json({ success: true, message: invoices })
     } catch (error) {
         console.log("Error in fetching invoices:", error.message)

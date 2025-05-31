@@ -21,10 +21,41 @@ export const useInvoiceStore = create((set) => ({
         return { success: true, message: "Invoice created successfully" }
     },
     fetchInvoices: async () => {
-        const res = await fetch("/api/invoice")
+        const res = await fetch("/api/invoices")
         const data = await res.json()
-        set({ invoices: data.data })
-    }
-}))
+        set({ invoices: data.message })
+    },
+    deleteInvoice: async (id) => {
+        const res = await fetch(`/api/invoices/${pid}`, {
+            method: "DELETE"
+        })
 
-}
+        const data = await res.json()
+        if (!data.success) {
+            return { success: false, message: data.message }
+        }
+
+        set((state) => ({ invoices: state.invoices.filter((invoice) => invoice._id !== id) }))
+
+        return { success: true, message: data.message }
+    },
+    updateInvoice: async (id, updatedInvoice) => {
+        const res = await fetch(`/api/invoices/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(updatedInvoice)
+        })
+
+        const data = await res.json()
+        if(!data.success) {
+            return { success: false, message: data.message }
+        }
+
+        set((state) => ({ invoices: state.invoices.map(invoice => invoice._id === id ? data.data : invoice) }))
+
+        return { success: true, message: data.message }
+    },
+}))
