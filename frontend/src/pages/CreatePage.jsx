@@ -34,7 +34,7 @@ const CreatePage = () => {
       })
     }
 
-    setNewInvoice({ name: "", price: "", image: "" })
+    setNewInvoice({ company: "", id: "", subtotal: "", shipping: "", tax: "", total: "" })
   }
 
   return (

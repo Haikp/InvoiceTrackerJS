@@ -7,9 +7,27 @@ export const getInvoices = async (req, res) => {
         res.status(200).json({ success: true, message: invoices })
     } catch (error) {
         console.log("Error in fetching invoices:", error.message)
-        res.status(404).json({ success: false, message: "There are no invoices" })
+        res.status(500).json({ success: false, message: "Server Error" })
     }
 }
+
+export const searchInvoices = async (req, res) => {
+    const q = req.query.q || "";
+  
+    try {
+        const results = await Invoice.find({
+          $or: [
+            { company: { $regex: q, $options: "i" } },
+            { id: { $regex: q, $options: "i" } },
+          ],
+        }).limit(20);
+    
+        res.status(200).json({ success: true, message: results });
+    } catch (error) {
+      console.log("Error in searching invoices:", error.message);
+      res.status(500).json({ success: false, message: "Failed to search invoices" });
+    }
+  };
 
 export const createInvoice = async (req, res) => {
     const invoice = req.body

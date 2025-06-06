@@ -5,6 +5,7 @@ import { useInvoiceStore } from '../store/invoice'
 import SearchBar from '../components/SearchBar'
 import { gridColumnSizes, gridRowSizes, searchBarHeight } from '../components/LayoutConfig'
 import InvoiceTable from '../components/InvoiceTable'
+import NavBar from '../components/NavBar'
 
 const HomePage = () => {
   const { fetchInvoices, invoices } = useInvoiceStore();
@@ -18,7 +19,7 @@ const HomePage = () => {
     <Grid
       templateAreas={`"func home search"
                       "func nav main"
-                      "func nav footer"`}
+                      "func nav main"`}
       gridTemplateRows={gridRowSizes}
       gridTemplateColumns={gridColumnSizes}
       h='100vh'
@@ -49,17 +50,14 @@ const HomePage = () => {
           </Text>
         </Flex>
       </GridItem>
-      <GridItem pl='2' bg='yellow.300' area={'search'}>
+      <GridItem pl='0' bg='yellow.300' area={'search'}>
         <SearchBar />
       </GridItem>
       <GridItem pl='2' bg='pink.300' area={'nav'}>
-        Nav
+        <NavBar></NavBar>
       </GridItem>
-      <GridItem pl='2' bg='green.300' area={'main'} >
-        {/* <InvoiceTable invoices={invoices} /> */}
-      </GridItem>
-      <GridItem pl='2' bg='blue.300' area={'footer'}>
-        Footer
+      <GridItem pl='0' bg='green.300' area={'main'} overflowY="auto" >
+        <InvoiceTable invoices={invoices} />
       </GridItem>
     </Grid>
   )
