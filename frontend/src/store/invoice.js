@@ -23,19 +23,19 @@ export const useInvoiceStore = create((set) => ({
     fetchInvoices: async () => {
         const res = await fetch("/api/invoices")
         const data = await res.json()
-        set({ invoices: data.message })
+        set({ invoices: data.data })
     },
     searchInvoices: async (query) => {
         const res = await fetch(`/api/invoices/search?q=${query}`, {
             method: "GET"
         })
         const data = await res.json()
-        set({ invoices: data.message })
+        set({ invoices: data.data })
 
         return { success: true, message: data.message }
     },
     deleteInvoice: async (id) => {
-        const res = await fetch(`/api/invoices/${pid}`, {
+        const res = await fetch(`/api/invoices/${id}`, {
             method: "DELETE"
         })
 

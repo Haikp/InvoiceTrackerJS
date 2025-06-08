@@ -1,15 +1,19 @@
-import { Box, Button, Center, HStack, IconButton, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react'
+import { Box, Button, Center, HStack, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, VStack, useDisclosure, useToast } from '@chakra-ui/react'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { FaRegStar, FaStar } from "react-icons/fa6";
 import { RiInboxArchiveLine, RiInboxUnarchiveFill } from "react-icons/ri";
+import { useInvoiceStore } from "../store/invoice"
 
-import React from 'react'
+import React, { useState } from 'react'
 
 const InvoiceTable = ({ invoices }) => {
-    const sumSubtotal = invoices.reduce((sum, inv) => sum + inv.subtotal, 0);
-    const sumShipping = invoices.reduce((sum, inv) => sum + inv.shipping, 0);
-    const sumTax = invoices.reduce((sum, inv) => sum + inv.tax, 0);
-    const sumTotal = invoices.reduce((sum, inv) => sum + inv.total, 0);
+    const [ updatedInvoice, setUpdatedInvoice ] = useState(null)
+
+    const sumSubtotal = invoices.reduce((sum, inv) => sum + Number(inv?.subtotal ?? 0), 0);
+    const sumShipping = invoices.reduce((sum, inv) => sum + Number(inv?.shipping ?? 0), 0);
+    const sumTax = invoices.reduce((sum, inv) => sum + Number(inv?.tax ?? 0), 0);
+    const sumTotal = invoices.reduce((sum, inv) => sum + Number(inv?.total ?? 0), 0);
+    
 
     const companyColWidth = "20%"
     const invoiceColWidth = "10%"
@@ -18,6 +22,53 @@ const InvoiceTable = ({ invoices }) => {
     const taxColWidth = "10%"
     const totalColWidth = "10%"
     const actionsColWidth = "15%"
+
+    const { deleteInvoice, updateInvoice } = useInvoiceStore();
+    const toast = useToast();
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const handleDeleteInvoice = async (id) => {
+        const { success, message } = await deleteInvoice(id);
+        if (!success) {
+            toast({
+                title: "Error",
+                description: message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            })
+        } else {
+            toast({
+                title: "Success",
+                description: message,
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            })
+        }
+    }
+
+    const handleUpdateInvoice = async (id, updatedInvoice) => {
+        const { success, message } = await updateInvoice(id, updatedInvoice)
+        onClose();
+        if (!success) {
+            toast({
+                title: "Error",
+                description: message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            })
+        } else {
+            toast({
+                title: "Success",
+                description: message,
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            })
+        }
+    }
 
     return (
       <Box maxHeight="100%" overflowY="auto" borderWidth="1px" borderRadius="md" sx={{
@@ -46,18 +97,19 @@ const InvoiceTable = ({ invoices }) => {
           <Tbody>
             {invoices.slice().reverse().map((invoice) => (
               <Tr key={invoice._id}>
-                <Td width={companyColWidth}  whiteSpace="nowrap">{invoice.company}</Td>
-                <Td width={invoiceColWidth}  whiteSpace="nowrap">{invoice.id}</Td>
-                <Td width={subtotalColWidth} isNumeric whiteSpace="nowrap">${invoice.subtotal.toFixed(2)}</Td>
-                <Td width={shippingColWidth} isNumeric whiteSpace="nowrap">${invoice.shipping.toFixed(2)}</Td>
-                <Td width={taxColWidth}      isNumeric whiteSpace="nowrap"> ${invoice.tax.toFixed(2)}</Td>
-                <Td width={totalColWidth}    isNumeric whiteSpace="nowrap"> ${invoice.total.toFixed(2)}</Td>
+                <Td width={companyColWidth}  whiteSpace="nowrap">{String(invoice.company)}</Td>
+                <Td width={invoiceColWidth}  whiteSpace="nowrap">{String(invoice.id)}</Td>
+                <Td width={subtotalColWidth} isNumeric whiteSpace="nowrap">${Number(invoice.subtotal.toFixed(2))}</Td>
+                <Td width={shippingColWidth} isNumeric whiteSpace="nowrap">${Number(invoice.shipping.toFixed(2))}</Td>
+                <Td width={taxColWidth}      isNumeric whiteSpace="nowrap"> ${Number(invoice.tax.toFixed(2))}</Td>
+                <Td width={totalColWidth}    isNumeric whiteSpace="nowrap"> ${Number(invoice.total.toFixed(2))}</Td>
                 <Td width={actionsColWidth} >
                     <Center>
-                        <IconButton icon={<FaRegStar/>}></IconButton>
-                        <IconButton icon={<RiInboxArchiveLine/>}></IconButton>
-                        <IconButton icon={<EditIcon/>}></IconButton>
-                        <IconButton icon={<DeleteIcon/>}></IconButton>
+                        <IconButton icon={ invoice.starred === false ? <FaRegStar/> : <FaStar/> }/>
+                        <IconButton icon={ invoice.archived === false ? <RiInboxArchiveLine/> : <RiInboxUnarchiveFill/> }>
+                        </IconButton>
+                        <IconButton icon={<EditIcon/>} onClick={() => {setUpdatedInvoice(invoice); onOpen();}}/>
+                        <IconButton icon={<DeleteIcon/>} onClick={() => handleDeleteInvoice(invoice._id)}/>
                     </Center>
                 </Td>
               </Tr>
@@ -75,6 +127,69 @@ const InvoiceTable = ({ invoices }) => {
             </Tr>
           </Tfoot>
         </Table>
+        <Modal isOpen={isOpen} onClose={onClose} >
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader>Update Invoice</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                    <VStack spacing={4}>
+                        <Input
+                            placeholder='Company'
+                            name='company'
+                            value={updatedInvoice?.company || ""}
+                            onChange={(e) => setUpdatedInvoice({ ...updatedInvoice, company: e.target.value }) }
+                                
+                        />
+                        <Input
+                            placeholder='Invoice ID'
+                            name='id'
+                            value={updatedInvoice?.id || ""}
+                            onChange={(e) => setUpdatedInvoice({ ...updatedInvoice, id: e.target.value }) }
+                        />
+                        <Input
+                            placeholder='Subtotal'
+                            name='subtotal'
+                            type='number'
+                            value={updatedInvoice?.subtotal || ""}
+                            onChange={(e) => setUpdatedInvoice({ ...updatedInvoice, subtotal: e.target.value }) }
+                        />
+                        <Input
+                            placeholder='Shipping Fee'
+                            name='shipping'
+                            type='number'
+                            value={updatedInvoice?.shipping || ""}
+                            onChange={(e) => setUpdatedInvoice({ ...updatedInvoice, shipping: e.target.value }) }
+                        />
+                        <Input
+                            placeholder='Tax'
+                            name='tax'
+                            type='number'
+                            value={updatedInvoice?.tax || ""}
+                            onChange={(e) => setUpdatedInvoice({ ...updatedInvoice, tax: e.target.value }) }
+                        />
+                        <Input
+                            placeholder='Total'
+                            name='total'
+                            type='number'
+                            value={updatedInvoice?.total || ""}
+                            onChange={(e) => setUpdatedInvoice({ ...updatedInvoice, total: e.target.value }) }
+                        />
+                    </VStack>
+                </ModalBody>
+
+                <ModalFooter>
+                    <Button
+                        onClick={() => handleUpdateInvoice(updatedInvoice._id, updatedInvoice)}
+                    >
+                        Update
+                    </Button>
+                    <Button
+                        variant={'ghost'} onClick={onClose}
+                    >Cancel</Button>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
       </Box>
     );
   };

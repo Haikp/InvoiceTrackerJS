@@ -27,6 +27,18 @@ const invoiceSchema = new mongoose.Schema({
     total: {
         type: Number,
         required: true
+    },
+    starred: {
+        type: Boolean,
+        default: false
+    },
+    archived: {
+        type: Boolean,
+        default: false
+    },
+    trashed: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true
