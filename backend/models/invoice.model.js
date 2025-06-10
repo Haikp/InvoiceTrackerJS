@@ -28,6 +28,10 @@ const invoiceSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    paid: {
+        type: Boolean,
+        default: false
+    },
     starred: {
         type: Boolean,
         default: false
@@ -39,6 +43,10 @@ const invoiceSchema = new mongoose.Schema({
     trashed: {
         type: Boolean,
         default: false
+    },
+    trashedAt: {
+        type: Date,
+        default: null
     }
 }, {
     timestamps: true

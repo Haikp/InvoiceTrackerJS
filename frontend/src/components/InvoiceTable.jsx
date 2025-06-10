@@ -1,6 +1,8 @@
 import { Box, Button, Center, HStack, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, VStack, useDisclosure, useToast } from '@chakra-ui/react'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
-import { FaRegStar, FaStar } from "react-icons/fa6";
+import { PiMoneyWavy, PiMoneyWavyFill } from "react-icons/pi";
+import { FaRegStar, FaStar, FaFire } from "react-icons/fa6";
+import { FaRegTrashAlt, FaTrashRestoreAlt } from "react-icons/fa";
 import { RiInboxArchiveLine, RiInboxUnarchiveFill } from "react-icons/ri";
 import { useInvoiceStore } from "../store/invoice"
 
@@ -9,21 +11,15 @@ import React, { useState } from 'react'
 const InvoiceTable = ({ invoices }) => {
     const [ updatedInvoice, setUpdatedInvoice ] = useState(null)
 
-    const sumSubtotal = invoices.reduce((sum, inv) => sum + Number(inv?.subtotal ?? 0), 0);
-    const sumShipping = invoices.reduce((sum, inv) => sum + Number(inv?.shipping ?? 0), 0);
-    const sumTax = invoices.reduce((sum, inv) => sum + Number(inv?.tax ?? 0), 0);
-    const sumTotal = invoices.reduce((sum, inv) => sum + Number(inv?.total ?? 0), 0);
-    
-
-    const companyColWidth = "20%"
+    const companyColWidth = "16%"
     const invoiceColWidth = "10%"
     const subtotalColWidth = "10%"
     const shippingColWidth = "10%"
     const taxColWidth = "10%"
-    const totalColWidth = "10%"
-    const actionsColWidth = "15%"
+    const totalColWidth = "15%"
+    const actionsColWidth = "20%"
 
-    const { deleteInvoice, updateInvoice } = useInvoiceStore();
+    const { deleteInvoice, updateInvoice, invoiceStatus, starInvoice, archiveInvoice, trashInvoice, filter } = useInvoiceStore();
     const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -70,6 +66,104 @@ const InvoiceTable = ({ invoices }) => {
         }
     }
 
+    const handleInvoicePaymentStatus = async (id) => {
+        const { success, message } = await invoiceStatus(id);
+        if (!success) {
+            toast({
+                title: "Error",
+                description: message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            })
+        } else {
+            toast({
+                title: "Success",
+                description: message,
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            })
+        }
+    }
+
+    const handleStarInvoice = async (id) => {
+        const { success, message } = await starInvoice(id);
+        if (!success) {
+            toast({
+                title: "Error",
+                description: message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            })
+        } else {
+            toast({
+                title: "Success",
+                description: message,
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            })
+        }
+    }
+
+    const handleArchiveInvoice = async (id) => {
+        const { success, message } = await archiveInvoice(id);
+        if (!success) {
+            toast({
+                title: "Error",
+                description: message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            })
+        } else {
+            toast({
+                title: "Success",
+                description: message,
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            })
+        }
+    }
+
+    const handleTrashInvoice = async (id) => {
+        const { success, message } = await trashInvoice(id);
+        if (!success) {
+            toast({
+                title: "Error",
+                description: message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            })
+        } else {
+            toast({
+                title: "Success",
+                description: message,
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            })
+        }
+    }
+
+    const visibleInvoices = invoices.filter(inv => {
+        if (filter === "starred") return inv.starred && !inv.archived && !inv.trashed;
+        if (filter === "archived") return inv.archived && !inv.trashed;
+        if (filter === "trashed") return inv.trashed;
+        // Default: show only active (not archived, not trashed)
+        return !inv.archived && !inv.trashed;
+      });
+
+    const sumSubtotal = visibleInvoices.reduce((sum, inv) => sum + Number(inv?.subtotal ?? 0), 0);
+    const sumShipping = visibleInvoices.reduce((sum, inv) => sum + Number(inv?.shipping ?? 0), 0);
+    const sumTax      = visibleInvoices.reduce((sum, inv) => sum + Number(inv?.tax ?? 0), 0);
+    const sumTotal    = visibleInvoices.reduce((sum, inv) => sum + Number(inv?.total ?? 0), 0);
+    
+
     return (
       <Box maxHeight="100%" overflowY="auto" borderWidth="1px" borderRadius="md" sx={{
         /* For Chrome, Safari, Edge */
@@ -95,7 +189,7 @@ const InvoiceTable = ({ invoices }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {invoices.slice().reverse().map((invoice) => (
+            {visibleInvoices.slice().reverse().map((invoice) => (
               <Tr key={invoice._id}>
                 <Td width={companyColWidth}  whiteSpace="nowrap">{String(invoice.company)}</Td>
                 <Td width={invoiceColWidth}  whiteSpace="nowrap">{String(invoice.id)}</Td>
@@ -105,11 +199,23 @@ const InvoiceTable = ({ invoices }) => {
                 <Td width={totalColWidth}    isNumeric whiteSpace="nowrap"> ${Number(invoice.total.toFixed(2))}</Td>
                 <Td width={actionsColWidth} >
                     <Center>
-                        <IconButton icon={ invoice.starred === false ? <FaRegStar/> : <FaStar/> }/>
-                        <IconButton icon={ invoice.archived === false ? <RiInboxArchiveLine/> : <RiInboxUnarchiveFill/> }>
-                        </IconButton>
-                        <IconButton icon={<EditIcon/>} onClick={() => {setUpdatedInvoice(invoice); onOpen();}}/>
-                        <IconButton icon={<DeleteIcon/>} onClick={() => handleDeleteInvoice(invoice._id)}/>
+                        { filter === "trashed" && (
+                            <>
+                                <IconButton icon={<FaTrashRestoreAlt/>} onClick={() => handleTrashInvoice(invoice._id)}/>
+                                <IconButton icon={<FaFire/>} onClick={() => handleDeleteInvoice(invoice._id)}/>
+                            </>
+                        )}
+
+                        { filter !== "trashed" && (
+                            <>
+                                <IconButton icon={ invoice.paid === false ? <PiMoneyWavy/> : <PiMoneyWavyFill/> } onClick={() => handleInvoicePaymentStatus(invoice._id)}/>
+                                <IconButton icon={ invoice.starred === false ? <FaRegStar/> : <FaStar/> } onClick={() => handleStarInvoice(invoice._id)}/>
+                                <IconButton icon={ invoice.archived === false ? <RiInboxArchiveLine/> : <RiInboxUnarchiveFill/> } onClick={() => handleArchiveInvoice(invoice._id)}>
+                                </IconButton>
+                                <IconButton icon={<EditIcon/>} onClick={() => {setUpdatedInvoice(invoice); onOpen();}}/>
+                                <IconButton icon={<FaRegTrashAlt/>} onClick={() => handleTrashInvoice(invoice._id)}/>
+                            </>
+                        )}
                     </Center>
                 </Td>
               </Tr>

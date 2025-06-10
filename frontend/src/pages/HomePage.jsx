@@ -6,6 +6,7 @@ import SearchBar from '../components/SearchBar'
 import { gridColumnSizes, gridRowSizes, searchBarHeight } from '../components/LayoutConfig'
 import InvoiceTable from '../components/InvoiceTable'
 import NavBar from '../components/NavBar'
+import FuncBar from '../components/FuncBar'
 
 const HomePage = () => {
   const { fetchInvoices, invoices } = useInvoiceStore();
@@ -27,8 +28,8 @@ const HomePage = () => {
       color='blackAlpha.700'
       fontWeight='bold'
     >
-      <GridItem pl='2' bg='gray.300' area={'func'}>
-        func
+      <GridItem bg='gray.300' area={'func'}>
+        <FuncBar/>
       </GridItem>
       <GridItem pl='2' bg='yellow.300' area={'home'}>
         <Flex
