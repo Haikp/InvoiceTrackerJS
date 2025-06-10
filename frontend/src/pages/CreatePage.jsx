@@ -1,20 +1,23 @@
 import { Box, Button, Container, Heading, Input, VStack, useColorModeValue, useToast } from "@chakra-ui/react";
 import { useState } from "react";
-import { useProductStore } from "../store/product";
+import { useInvoiceStore } from "../store/invoice";
 
 const CreatePage = () => {
-  const [newProduct, setNewProduct] = useState({
-    name: "",
-    price: "",
-    image: "",
+  const [newInvoice, setNewInvoice] = useState({
+    company: "",
+    id: "",
+    subtotal: "",
+    shipping: "",
+    tax: "",
+    total: ""
   });
 
   const toast = useToast();
 
-  const { createProduct } = useProductStore();
+  const { createInvoice } = useInvoiceStore();
 
-  const handleAddProduct = async () => {
-    const { success, message } = await createProduct(newProduct);
+  const handleAddInvoice = async () => {
+    const { success, message } = await createInvoice(newInvoice);
     if (!success) {
       toast({
         title: "Error",
@@ -31,7 +34,7 @@ const CreatePage = () => {
       })
     }
 
-    setNewProduct({ name: "", price: "", image: "" })
+    setNewInvoice({ company: "", id: "", subtotal: "", shipping: "", tax: "", total: "" })
   }
 
   return (
@@ -40,7 +43,7 @@ const CreatePage = () => {
       spacing={"8"}
       >
         <Heading as={"h1"} size={"2xl"} textAlign={"center"} mb={"8"}>
-          Create New Product
+          Create New Invoice
         </Heading>
 
         <Box
@@ -52,25 +55,43 @@ const CreatePage = () => {
         >
           <VStack spacing={"4"}>
             <Input 
-              placeholder="Product Name"
-              name="Name"
-              value={newProduct.name}
-              onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+              placeholder="Company Name"
+              name="Company"
+              value={newInvoice.company}
+              onChange={(e) => setNewInvoice({ ...newInvoice, company: e.target.value })}
             />
             <Input 
-              placeholder="Price"
-              name="Price"
-              value={newProduct.price}
-              onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
+              placeholder="Invoice ID"
+              name="ID"
+              value={newInvoice.id}
+              onChange={(e) => setNewInvoice({ ...newInvoice, id: e.target.value })}
             />
             <Input 
-              placeholder="Image URL"
-              name="image"
-              value={newProduct.image}
-              onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
+              placeholder="Subtotal"
+              name="Subtotal"
+              value={newInvoice.subtotal}
+              onChange={(e) => setNewInvoice({ ...newInvoice, subtotal: e.target.value })}
             />
-            <Button colorScheme="blue" onClick={handleAddProduct} w="full">
-              Add Product
+            <Input 
+              placeholder="Shipping Fee"
+              name="Shipping"
+              value={newInvoice.shipping}
+              onChange={(e) => setNewInvoice({ ...newInvoice, shipping: e.target.value })}
+            />
+            <Input 
+              placeholder="Tax"
+              name="Tax"
+              value={newInvoice.tax}
+              onChange={(e) => setNewInvoice({ ...newInvoice, tax: e.target.value })}
+            />
+            <Input 
+              placeholder="Total"
+              name="Total"
+              value={newInvoice.total}
+              onChange={(e) => setNewInvoice({ ...newInvoice, total: e.target.value })}
+            />
+            <Button colorScheme="blue" onClick={handleAddInvoice} w="full">
+              Add Invoice
             </Button>
           </VStack>
 

@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import path from "path";
 import { connectDB } from "./config/db.js";
 import InvoiceRoutes from "./routes/invoice.route.js";
+import { cleanupTrashedInvoices } from "./cron/cleanup.js";
+import cron from "node-cron";
 
 dotenv.config();
 const app = express();
@@ -26,3 +28,9 @@ app.listen(PORT, () => {
     connectDB();
     console.log("Server started at http://localhost:" + PORT);
 });
+
+// Run cleanup once at server start
+await cleanupTrashedInvoices();
+
+// Schedule daily cron
+cron.schedule("0 0 * * *", cleanupTrashedInvoices);

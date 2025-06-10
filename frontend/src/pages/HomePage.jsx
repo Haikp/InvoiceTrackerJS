@@ -1,24 +1,26 @@
 import { Container, Flex, Grid, GridItem, SimpleGrid, Text, VStack } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useProductStore } from '../store/product'
-import ProductCard from '../components/ProductCard'
+import { useInvoiceStore } from '../store/invoice'
 import SearchBar from '../components/SearchBar'
 import { gridColumnSizes, gridRowSizes, searchBarHeight } from '../components/LayoutConfig'
+import InvoiceTable from '../components/InvoiceTable'
+import NavBar from '../components/NavBar'
+import FuncBar from '../components/FuncBar'
 
 const HomePage = () => {
-  const { fetchProducts, products } = useProductStore();
+  const { fetchInvoices, invoices } = useInvoiceStore();
 
   useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
-  console.log("products", products);
+    fetchInvoices();
+  }, [fetchInvoices]);
+  console.log("invoices", invoices);
 
   return (
     <Grid
       templateAreas={`"func home search"
                       "func nav main"
-                      "func nav footer"`}
+                      "func nav main"`}
       gridTemplateRows={gridRowSizes}
       gridTemplateColumns={gridColumnSizes}
       h='100vh'
@@ -26,8 +28,8 @@ const HomePage = () => {
       color='blackAlpha.700'
       fontWeight='bold'
     >
-      <GridItem pl='2' bg='gray.300' area={'func'}>
-        func
+      <GridItem bg='gray.300' area={'func'}>
+        <FuncBar/>
       </GridItem>
       <GridItem pl='2' bg='yellow.300' area={'home'}>
         <Flex
@@ -49,17 +51,14 @@ const HomePage = () => {
           </Text>
         </Flex>
       </GridItem>
-      <GridItem pl='2' bg='yellow.300' area={'search'}>
+      <GridItem pl='0' bg='yellow.300' area={'search'}>
         <SearchBar />
       </GridItem>
       <GridItem pl='2' bg='pink.300' area={'nav'}>
-        Nav
+        <NavBar></NavBar>
       </GridItem>
-      <GridItem pl='2' bg='green.300' area={'main'} >
-        Main
-      </GridItem>
-      <GridItem pl='2' bg='blue.300' area={'footer'}>
-        Footer
+      <GridItem pl='0' bg='green.300' area={'main'} overflowY="auto" >
+        <InvoiceTable invoices={invoices} />
       </GridItem>
     </Grid>
   )
