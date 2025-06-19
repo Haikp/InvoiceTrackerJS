@@ -7,7 +7,7 @@ import { debounce } from 'lodash'
 import { PlusSquareIcon } from "@chakra-ui/icons"
 import { IoMoon } from "react-icons/io5"
 import { LuSun } from "react-icons/lu"
-import { searchBarHeight } from './LayoutConfig'
+import { darkTheme, searchBarHeight } from './LayoutConfig'
 
 const SearchBar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -52,21 +52,17 @@ const SearchBar = () => {
           sm: "row",
         }}
       >
-        <Box w={"50%"} bg={"gray.100"} borderRadius={"md"}>
+        <Box w={"50%"} bg={darkTheme.searchBarColor} borderRadius={"md"}>
           <Input
-            placeholder="Search Bar"
+            placeholder="Search Company Name or Invoice ID..."
             name="Search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            color={darkTheme.textPrimary}
           />
         </Box>
 
         <HStack spacing={"2"} alignItems={"center"}>
-          <Link to={"/create"}>
-            <Button>
-              <PlusSquareIcon fontSize={"20"} />
-            </Button>
-          </Link>
           <Button onClick={toggleColorMode}>
             {colorMode === "light" ? <IoMoon /> : <LuSun fontSize={"20"} />}
           </Button>

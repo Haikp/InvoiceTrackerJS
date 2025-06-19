@@ -35,17 +35,14 @@ const HomePage = () => {
         <Flex
           h={searchBarHeight}
           alignItems={"center"}
-          flexDir={{
-            base:"column",
-            sm:"row"
-          }}
+          justifyContent={"center"}
         >
           <Text
             fontSize={{ base: "22", sm: "20" }}
             fontWeight={"bold"}
             textTransform={"uppercase"}
-            bgGradient={"linear(to-r, cyan.400, blue.500)"}
             bgClip={"text"}
+            color={darkTheme.textTitle}
           >
             <Link to={"/"}>Invoice Tracker</Link>
           </Text>

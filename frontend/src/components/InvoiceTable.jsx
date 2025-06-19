@@ -191,7 +191,17 @@ const InvoiceTable = ({ invoices }) => {
           </Thead>
           <Tbody bg={darkTheme.tableContent} textColor={darkTheme.textPrimary}>
             {visibleInvoices.slice().reverse().map((invoice) => (
-              <Tr key={invoice._id}>
+              <Tr key={invoice._id} 
+              role="group"
+              bg={invoice.paid ? darkTheme.tablePaid : darkTheme.tableContent}
+              sx={{
+                transition: "background-color 0.2s ease",
+              }}
+              _hover={{
+                filter: "brightness(1.15)",
+                // transition: "filter 0.2s ease-in-out",
+              }}
+              >
                 <Td width={companyColWidth}  whiteSpace="nowrap">{String(invoice.company)}</Td>
                 <Td width={invoiceColWidth}  whiteSpace="nowrap">{String(invoice.id)}</Td>
                 <Td width={subtotalColWidth} isNumeric whiteSpace="nowrap">${Number(invoice.subtotal.toFixed(2))}</Td>
@@ -202,19 +212,46 @@ const InvoiceTable = ({ invoices }) => {
                     <Center>
                         { filter === "trashed" && (
                             <>
-                                <IconButton icon={<FaTrashRestoreAlt/>} onClick={() => handleTrashInvoice(invoice._id)}/>
-                                <IconButton icon={<FaFire/>} onClick={() => handleDeleteInvoice(invoice._id)}/>
+                                <IconButton icon={<FaTrashRestoreAlt/>} onClick={() => handleTrashInvoice(invoice._id)}
+                                _groupHover={{
+                                    color: darkTheme.trashButton,
+                                }}
+                                />
+                                <IconButton icon={<FaFire/>} onClick={() => handleDeleteInvoice(invoice._id)}
+                                _groupHover={{
+                                    color: darkTheme.deleteButton,
+                                }}
+                                />
                             </>
                         )}
 
                         { filter !== "trashed" && (
                             <>
-                                <IconButton icon={ invoice.paid === false ? <PiMoneyWavy/> : <PiMoneyWavyFill/> } onClick={() => handleInvoicePaymentStatus(invoice._id)}/>
-                                <IconButton icon={ invoice.starred === false ? <FaRegStar/> : <FaStar/> } onClick={() => handleStarInvoice(invoice._id)}/>
-                                <IconButton icon={ invoice.archived === false ? <RiInboxArchiveLine/> : <RiInboxUnarchiveFill/> } onClick={() => handleArchiveInvoice(invoice._id)}>
-                                </IconButton>
-                                <IconButton icon={<EditIcon/>} onClick={() => {setUpdatedInvoice(invoice); onOpen();}}/>
-                                <IconButton icon={<FaRegTrashAlt/>} onClick={() => handleTrashInvoice(invoice._id)}/>
+                                <IconButton icon={ invoice.paid === false ? <PiMoneyWavy/> : <PiMoneyWavyFill/> } onClick={() => handleInvoicePaymentStatus(invoice._id)}
+                                _groupHover={{
+                                    color: darkTheme.paidButton,
+                                }}
+                                />
+                                <IconButton icon={ invoice.starred === false ? <FaRegStar/> : <FaStar/> } onClick={() => handleStarInvoice(invoice._id)}
+                                _groupHover={{
+                                    color: darkTheme.starButton,
+                                }}
+                                />
+                                <IconButton icon={ invoice.archived === false ? <RiInboxArchiveLine/> : <RiInboxUnarchiveFill/> } onClick={() => handleArchiveInvoice(invoice._id)}
+                                _groupHover={{
+                                    color: darkTheme.archiveButton,
+                                }}
+                                />
+                                <IconButton icon={<EditIcon/>} onClick={() => {setUpdatedInvoice(invoice); onOpen();}}
+                                _groupHover={{
+                                    color: "white",
+                                }}
+                                />
+                                <IconButton icon={<FaRegTrashAlt/>} onClick={() => handleTrashInvoice(invoice._id)}
+                                _groupHover={{
+                                    color: darkTheme.trashButton,
+                                }}
+                                />
                             </>
                         )}
                     </Center>
@@ -236,7 +273,7 @@ const InvoiceTable = ({ invoices }) => {
         </Table>
         <Modal isOpen={isOpen} onClose={onClose} >
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent bg={darkTheme.surface} color={darkTheme.textPrimary}>
                 <ModalHeader>Update Invoice</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
