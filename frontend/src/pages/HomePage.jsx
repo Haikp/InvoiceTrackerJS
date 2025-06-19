@@ -28,10 +28,10 @@ const HomePage = () => {
       color='blackAlpha.700'
       fontWeight='bold'
     >
-      <GridItem bg='gray.300' area={'func'}>
+      <GridItem bg={darkTheme.surface} area={'func'}>
         <FuncBar/>
       </GridItem>
-      <GridItem pl='2' bg='yellow.300' area={'home'}>
+      <GridItem pl='2' bg={darkTheme.surface} area={'home'}>
         <Flex
           h={searchBarHeight}
           alignItems={"center"}
@@ -51,13 +51,13 @@ const HomePage = () => {
           </Text>
         </Flex>
       </GridItem>
-      <GridItem pl='0' bg='yellow.300' area={'search'}>
+      <GridItem pl='0' bg={darkTheme.surface} area={'search'}>
         <SearchBar />
       </GridItem>
-      <GridItem pl='2' bg='pink.300' area={'nav'}>
+      <GridItem bg={darkTheme.surface} area={'nav'}>
         <NavBar></NavBar>
       </GridItem>
-      <GridItem pl='0' bg='pink.300' area={'main'} overflowY="auto" >
+      <GridItem pl='0' bg={darkTheme.surface} area={'main'} overflowY="auto" >
         <InvoiceTable invoices={invoices} />
       </GridItem>
     </Grid>

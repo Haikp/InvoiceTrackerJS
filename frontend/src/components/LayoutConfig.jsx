@@ -7,19 +7,22 @@ export const searchBarHeight = "50px"
 export const footerHeight = "30px"
 
 //color set
-const darkTheme = {
-  background: "#121212",
-  surface: "#1E1E1E",
-  textPrimary: "#E0E0E0",
-  textSecondary: "#A0A0A0",
-  primary: "#BB86FC",
-  secondary: "#03DAC6",
-  error: "#CF6679",
-  success: "#4CAF50",
-  warning: "#FFC107",
-  border: "#333333",
-  button: {
-    primary: "#8B5CF6",
-    secondary: "#C084FC"
-  }
+export const darkTheme = {
+  background: "#222431",
+  surface: "#2b2f3f",
+  tableHeader: "#262a38",
+  tableContent: "#303446",
+  textPrimary: "#c6d0f5",
+  textSecondary: "#9ea6c4",
+  error: "#eb88a5",
+  success: "#a1de9c",
+}
+
+export const lightTheme = {
+  background: "#222431",
+  surface: "#303446",
+  textPrimary: "#f3d6c2",
+  textSecondary: "#b2a098",
+  error: "#eb88a5",
+  success: "#a1de9c",
 }

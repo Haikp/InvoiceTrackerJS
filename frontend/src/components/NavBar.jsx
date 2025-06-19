@@ -1,6 +1,7 @@
 import { Button, Center, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, VStack, useDisclosure, useToast } from '@chakra-ui/react'
 import { useInvoiceStore } from "../store/invoice"
 import React, { useState } from 'react'
+import { navWidth } from './LayoutConfig.jsx'
 
 const NavBar = () => {
   const setFilter = useInvoiceStore(state => state.setFilter);
@@ -41,49 +42,39 @@ const NavBar = () => {
   }
 
   return (
-    <VStack>
+    <VStack spacing={0}>
       <Button
         size='md'
-        height='48px'
-        width='200px'
-        border='2px'
-        borderColor='green.500' 
+        height='40px'
+        width={navWidth}
         onClick={() => onOpen()}>
           New Invoice
       </Button>
       <Button
         size='md'
-        height='48px'
-        width='200px'
-        border='2px'
-        borderColor='green.500' 
+        height='40px'
+        width={navWidth}
         onClick={() => setFilter("all")}>
           All Invoices
       </Button>
       <Button
         size='md'
-        height='48px'
-        width='200px'
-        border='2px'
-        borderColor='green.500' 
+        height='40px'
+        width={navWidth}
         onClick={() => setFilter("starred")}>
           Starred
       </Button>
       <Button
         size='md'
-        height='48px'
-        width='200px'
-        border='2px'
-        borderColor='green.500' 
+        height='40px'
+        width={navWidth}
         onClick={() => setFilter("archived")}>
           Archived
       </Button>
       <Button
         size='md'
-        height='48px'
-        width='200px'
-        border='2px'
-        borderColor='green.500' 
+        height='40px'
+        width={navWidth}
         onClick={() => setFilter("trashed")}>
           Trash
       </Button>

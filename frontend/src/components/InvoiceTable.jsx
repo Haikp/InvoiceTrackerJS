@@ -7,6 +7,7 @@ import { RiInboxArchiveLine, RiInboxUnarchiveFill } from "react-icons/ri";
 import { useInvoiceStore } from "../store/invoice"
 
 import React, { useState } from 'react'
+import { darkTheme } from './LayoutConfig';
 
 const InvoiceTable = ({ invoices }) => {
     const [ updatedInvoice, setUpdatedInvoice ] = useState(null)
@@ -30,7 +31,7 @@ const InvoiceTable = ({ invoices }) => {
                 title: "Error",
                 description: message,
                 status: "error",
-                duration: 3000,
+                duration: 2000,
                 isClosable: true,
             })
         } else {
@@ -38,7 +39,7 @@ const InvoiceTable = ({ invoices }) => {
                 title: "Success",
                 description: message,
                 status: "success",
-                duration: 3000,
+                duration: 2000,
                 isClosable: true,
             })
         }
@@ -52,7 +53,7 @@ const InvoiceTable = ({ invoices }) => {
                 title: "Error",
                 description: message,
                 status: "error",
-                duration: 3000,
+                duration: 2000,
                 isClosable: true,
             })
         } else {
@@ -60,7 +61,7 @@ const InvoiceTable = ({ invoices }) => {
                 title: "Success",
                 description: message,
                 status: "success",
-                duration: 3000,
+                duration: 2000,
                 isClosable: true,
             })
         }
@@ -73,7 +74,7 @@ const InvoiceTable = ({ invoices }) => {
                 title: "Error",
                 description: message,
                 status: "error",
-                duration: 3000,
+                duration: 2000,
                 isClosable: true,
             })
         } else {
@@ -81,7 +82,7 @@ const InvoiceTable = ({ invoices }) => {
                 title: "Success",
                 description: message,
                 status: "success",
-                duration: 3000,
+                duration: 2000,
                 isClosable: true,
             })
         }
@@ -94,7 +95,7 @@ const InvoiceTable = ({ invoices }) => {
                 title: "Error",
                 description: message,
                 status: "error",
-                duration: 3000,
+                duration: 2000,
                 isClosable: true,
             })
         } else {
@@ -102,7 +103,7 @@ const InvoiceTable = ({ invoices }) => {
                 title: "Success",
                 description: message,
                 status: "success",
-                duration: 3000,
+                duration: 2000,
                 isClosable: true,
             })
         }
@@ -115,7 +116,7 @@ const InvoiceTable = ({ invoices }) => {
                 title: "Error",
                 description: message,
                 status: "error",
-                duration: 3000,
+                duration: 2000,
                 isClosable: true,
             })
         } else {
@@ -123,7 +124,7 @@ const InvoiceTable = ({ invoices }) => {
                 title: "Success",
                 description: message,
                 status: "success",
-                duration: 3000,
+                duration: 2000,
                 isClosable: true,
             })
         }
@@ -136,7 +137,7 @@ const InvoiceTable = ({ invoices }) => {
                 title: "Error",
                 description: message,
                 status: "error",
-                duration: 3000,
+                duration: 2000,
                 isClosable: true,
             })
         } else {
@@ -144,7 +145,7 @@ const InvoiceTable = ({ invoices }) => {
                 title: "Success",
                 description: message,
                 status: "success",
-                duration: 3000,
+                duration: 2000,
                 isClosable: true,
             })
         }
@@ -176,19 +177,19 @@ const InvoiceTable = ({ invoices }) => {
         msOverflowStyle: 'none',
       }}>
         <Table size="sm" variant="simple" style={{ tableLayout: 'fixed', width: '100%' }}>
-          <TableCaption>End of List</TableCaption>
-          <Thead position="sticky" top={0} bg="white" zIndex={1}>
+          <TableCaption bg={darkTheme.background} textColor={darkTheme.textSecondary}>End of List</TableCaption>
+          <Thead position="sticky" top={0} bg={darkTheme.tableHeader} zIndex={1}>
             <Tr>
-              <Th width={companyColWidth}  >Company</Th>
-              <Th width={invoiceColWidth}  >Invoice ID</Th>
-              <Th width={subtotalColWidth} isNumeric>Subtotal</Th>
-              <Th width={shippingColWidth} isNumeric>Shipping</Th>
-              <Th width={taxColWidth}      isNumeric>Tax</Th>
-              <Th width={totalColWidth}    isNumeric>Total</Th>
-              <Th width={actionsColWidth}  ><Center>Actions</Center></Th>
+              <Th textColor={darkTheme.textSecondary} width={companyColWidth}  >Company</Th>
+              <Th textColor={darkTheme.textSecondary} width={invoiceColWidth}  >Invoice ID</Th>
+              <Th textColor={darkTheme.textSecondary} width={subtotalColWidth} isNumeric>Subtotal</Th>
+              <Th textColor={darkTheme.textSecondary} width={shippingColWidth} isNumeric>Shipping</Th>
+              <Th textColor={darkTheme.textSecondary} width={taxColWidth}      isNumeric>Tax</Th>
+              <Th textColor={darkTheme.textSecondary} width={totalColWidth}    isNumeric>Total</Th>
+              <Th textColor={darkTheme.textSecondary} width={actionsColWidth}  ><Center>Actions</Center></Th>
             </Tr>
           </Thead>
-          <Tbody>
+          <Tbody bg={darkTheme.tableContent} textColor={darkTheme.textPrimary}>
             {visibleInvoices.slice().reverse().map((invoice) => (
               <Tr key={invoice._id}>
                 <Td width={companyColWidth}  whiteSpace="nowrap">{String(invoice.company)}</Td>
@@ -221,15 +222,15 @@ const InvoiceTable = ({ invoices }) => {
               </Tr>
             ))}
           </Tbody>
-          <Tfoot position={"sticky"} bottom={0} bg={"white"} zIndex={1}>
+          <Tfoot position={"sticky"} bottom={0} bg={darkTheme.tableHeader} zIndex={1}>
             <Tr>
-              <Th width={companyColWidth}  >Column Sums</Th>
-              <Th width={invoiceColWidth}  ></Th>
-              <Th width={subtotalColWidth} isNumeric whiteSpace="nowrap">${sumSubtotal.toFixed(2)}</Th>
-              <Th width={shippingColWidth} isNumeric whiteSpace="nowrap">${sumShipping.toFixed(2)}</Th>
-              <Th width={taxColWidth}      isNumeric whiteSpace="nowrap">${sumTax.toFixed(2)}</Th>
-              <Th width={totalColWidth}    isNumeric whiteSpace="nowrap">${sumTotal.toFixed(2)}</Th>
-              <Th width={actionsColWidth}  ><Center>Actions</Center></Th>
+              <Th textColor={darkTheme.textSecondary} width={companyColWidth}  >Column Sums</Th>
+              <Th textColor={darkTheme.textSecondary} width={invoiceColWidth}  ></Th>
+              <Th textColor={darkTheme.textSecondary} width={subtotalColWidth} isNumeric whiteSpace="nowrap">${sumSubtotal.toFixed(2)}</Th>
+              <Th textColor={darkTheme.textSecondary} width={shippingColWidth} isNumeric whiteSpace="nowrap">${sumShipping.toFixed(2)}</Th>
+              <Th textColor={darkTheme.textSecondary} width={taxColWidth}      isNumeric whiteSpace="nowrap">${sumTax.toFixed(2)}</Th>
+              <Th textColor={darkTheme.textSecondary} width={totalColWidth}    isNumeric whiteSpace="nowrap">${sumTotal.toFixed(2)}</Th>
+              <Th textColor={darkTheme.textSecondary} width={actionsColWidth}  ><Center>Actions</Center></Th>
             </Tr>
           </Tfoot>
         </Table>
