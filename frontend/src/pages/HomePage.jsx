@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useInvoiceStore } from '../store/invoice'
 import SearchBar from '../components/SearchBar'
-import { gridColumnSizes, gridRowSizes, searchBarHeight } from '../components/LayoutConfig'
+import { gridColumnSizes, gridRowSizes, searchBarHeight, darkTheme } from '../components/LayoutConfig'
 import InvoiceTable from '../components/InvoiceTable'
 import NavBar from '../components/NavBar'
 import FuncBar from '../components/FuncBar'
@@ -57,7 +57,7 @@ const HomePage = () => {
       <GridItem pl='2' bg='pink.300' area={'nav'}>
         <NavBar></NavBar>
       </GridItem>
-      <GridItem pl='0' bg='green.300' area={'main'} overflowY="auto" >
+      <GridItem pl='0' bg='pink.300' area={'main'} overflowY="auto" >
         <InvoiceTable invoices={invoices} />
       </GridItem>
     </Grid>

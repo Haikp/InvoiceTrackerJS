@@ -13,7 +13,7 @@ const FuncBar = () => {
             icon={<FaFileInvoiceDollar/>}
             size={"lg"}
             bg={"teal"}
-            borderRadius={"full"}
+            borderRadius={"none"}
             >
                 <Link to={"/"}/>
         </IconButton>
