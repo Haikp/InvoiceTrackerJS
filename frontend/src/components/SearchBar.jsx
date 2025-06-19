@@ -61,12 +61,6 @@ const SearchBar = () => {
             color={darkTheme.textPrimary}
           />
         </Box>
-
-        <HStack spacing={"2"} alignItems={"center"}>
-          <Button onClick={toggleColorMode}>
-            {colorMode === "light" ? <IoMoon /> : <LuSun fontSize={"20"} />}
-          </Button>
-        </HStack>
       </Flex>
     </Container>
   );
