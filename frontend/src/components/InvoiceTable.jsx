@@ -1,4 +1,4 @@
-import { Box, Button, Center, HStack, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, VStack, useDisclosure, useToast } from '@chakra-ui/react'
+import { Box, Button, Center, HStack, IconButton, Input, InputGroup, InputLeftAddon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, VStack, useDisclosure, useToast } from '@chakra-ui/react'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { PiMoneyWavy, PiMoneyWavyFill } from "react-icons/pi";
 import { FaRegStar, FaStar, FaFire } from "react-icons/fa6";
@@ -291,6 +291,8 @@ const InvoiceTable = ({ invoices }) => {
                             value={updatedInvoice?.id || ""}
                             onChange={(e) => setUpdatedInvoice({ ...updatedInvoice, id: e.target.value }) }
                         />
+                        <InputGroup>
+                        <InputLeftAddon children="$"/>
                         <Input
                             placeholder='Subtotal'
                             name='subtotal'
@@ -298,6 +300,9 @@ const InvoiceTable = ({ invoices }) => {
                             value={updatedInvoice?.subtotal || ""}
                             onChange={(e) => setUpdatedInvoice({ ...updatedInvoice, subtotal: e.target.value }) }
                         />
+                        </InputGroup>
+                        <InputGroup>
+                        <InputLeftAddon children="$"/>
                         <Input
                             placeholder='Shipping Fee'
                             name='shipping'
@@ -305,6 +310,9 @@ const InvoiceTable = ({ invoices }) => {
                             value={updatedInvoice?.shipping || ""}
                             onChange={(e) => setUpdatedInvoice({ ...updatedInvoice, shipping: e.target.value }) }
                         />
+                        </InputGroup>
+                        <InputGroup>
+                        <InputLeftAddon children="$"/>
                         <Input
                             placeholder='Tax'
                             name='tax'
@@ -312,6 +320,9 @@ const InvoiceTable = ({ invoices }) => {
                             value={updatedInvoice?.tax || ""}
                             onChange={(e) => setUpdatedInvoice({ ...updatedInvoice, tax: e.target.value }) }
                         />
+                        </InputGroup>
+                        <InputGroup>
+                        <InputLeftAddon children="$"/>
                         <Input
                             placeholder='Total'
                             name='total'
@@ -319,6 +330,7 @@ const InvoiceTable = ({ invoices }) => {
                             value={updatedInvoice?.total || ""}
                             onChange={(e) => setUpdatedInvoice({ ...updatedInvoice, total: e.target.value }) }
                         />
+                        </InputGroup>
                     </VStack>
                 </ModalBody>
 

@@ -1,6 +1,8 @@
 import {
   Button,
   Input,
+  InputGroup,
+  InputLeftAddon,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -112,6 +114,8 @@ const NavBar = () => {
                   setNewInvoice({ ...newInvoice, id: e.target.value })
                 }
               />
+              <InputGroup>
+              <InputLeftAddon children="$"/>
               <Input
                 placeholder="Subtotal"
                 name="subtotal"
@@ -121,6 +125,9 @@ const NavBar = () => {
                   setNewInvoice({ ...newInvoice, subtotal: e.target.value })
                 }
               />
+              </InputGroup>
+              <InputGroup>
+              <InputLeftAddon children="$"/>
               <Input
                 placeholder="Shipping Fee"
                 name="shipping"
@@ -130,6 +137,9 @@ const NavBar = () => {
                   setNewInvoice({ ...newInvoice, shipping: e.target.value })
                 }
               />
+              </InputGroup>
+              <InputGroup>
+              <InputLeftAddon children="$"/>
               <Input
                 placeholder="Tax"
                 name="tax"
@@ -139,6 +149,9 @@ const NavBar = () => {
                   setNewInvoice({ ...newInvoice, tax: e.target.value })
                 }
               />
+              </InputGroup>
+              <InputGroup>
+              <InputLeftAddon children="$"/>
               <Input
                 placeholder="Total"
                 name="total"
@@ -148,6 +161,7 @@ const NavBar = () => {
                   setNewInvoice({ ...newInvoice, total: e.target.value })
                 }
               />
+              </InputGroup>
             </VStack>
           </ModalBody>
 
