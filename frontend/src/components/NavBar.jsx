@@ -35,6 +35,16 @@ const NavBar = () => {
     total: "",
   });
 
+  // Helper to update subtotal, shipping, tax, and auto-calc total
+  const handleFieldChange = (field, value) => {
+    const updated = { ...newInvoice, [field]: value };
+    const subtotal = Number(updated.subtotal) || 0;
+    const shipping = Number(updated.shipping) || 0;
+    const tax = Number(updated.tax) || 0;
+    updated.total = (subtotal + shipping + tax).toFixed(2);
+    setNewInvoice(updated);
+  };
+
   const handleAddInvoice = async () => {
     const { success, message } = await createInvoice(newInvoice);
     toast({
@@ -115,58 +125,55 @@ const NavBar = () => {
                 }
               />
               <InputGroup>
-              <InputLeftAddon children="$"/>
-              <Input
-                placeholder="Subtotal"
-                name="subtotal"
-                type="number"
-                value={newInvoice.subtotal}
-                onChange={(e) =>
-                  setNewInvoice({ ...newInvoice, subtotal: e.target.value })
-                }
-              />
+                <InputLeftAddon children="$" />
+                <Input
+                  placeholder="Subtotal"
+                  name="subtotal"
+                  type="number"
+                  value={newInvoice.subtotal}
+                  onChange={(e) => handleFieldChange("subtotal", e.target.value)}
+                />
               </InputGroup>
               <InputGroup>
-              <InputLeftAddon children="$"/>
-              <Input
-                placeholder="Shipping Fee"
-                name="shipping"
-                type="number"
-                value={newInvoice.shipping}
-                onChange={(e) =>
-                  setNewInvoice({ ...newInvoice, shipping: e.target.value })
-                }
-              />
+                <InputLeftAddon children="$" />
+                <Input
+                  placeholder="Shipping Fee"
+                  name="shipping"
+                  type="number"
+                  value={newInvoice.shipping}
+                  onChange={(e) => handleFieldChange("shipping", e.target.value)}
+                />
               </InputGroup>
               <InputGroup>
-              <InputLeftAddon children="$"/>
-              <Input
-                placeholder="Tax"
-                name="tax"
-                type="number"
-                value={newInvoice.tax}
-                onChange={(e) =>
-                  setNewInvoice({ ...newInvoice, tax: e.target.value })
-                }
-              />
+                <InputLeftAddon children="$" />
+                <Input
+                  placeholder="Tax"
+                  name="tax"
+                  type="number"
+                  value={newInvoice.tax}
+                  onChange={(e) => handleFieldChange("tax", e.target.value)}
+                />
               </InputGroup>
               <InputGroup>
-              <InputLeftAddon children="$"/>
-              <Input
-                placeholder="Total"
-                name="total"
-                type="number"
-                value={newInvoice.total}
-                onChange={(e) =>
-                  setNewInvoice({ ...newInvoice, total: e.target.value })
-                }
-              />
+                <InputLeftAddon children="$" />
+                <Input
+                  placeholder="Total"
+                  name="total"
+                  type="number"
+                  value={newInvoice.total}
+                  isReadOnly
+                />
               </InputGroup>
             </VStack>
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={() => { handleAddInvoice(); onClose(); }}>
+            <Button
+              onClick={() => {
+                handleAddInvoice();
+                onClose();
+              }}
+            >
               Add
             </Button>
             <Button variant="ghost" onClick={onClose}>
