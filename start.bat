@@ -5,7 +5,7 @@ cd /d "%PROJECT_DIR%"
 echo Current directory: %CD%
 
 echo Checking for git updates...
-git pull | findstr /C:"Already up to date." >nul
+git pull origin windows-package | findstr /C:"Already up to date." >nul
 if %errorlevel%==0 (
     echo No updates found.
 ) else (
