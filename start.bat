@@ -1,5 +1,5 @@
 :: Windows Exclusive
-@echo on
+@echo off
 set "PROJECT_DIR=E:\Development\ExportTools\InvoiceTrackerJS"
 cd /d "%PROJECT_DIR%"
 echo Current directory: %CD%
@@ -28,6 +28,7 @@ if ERRORLEVEL 1 (
 )
 
 echo Starting the server...
+start "" http://localhost:3000
 set NODE_ENV=production
 call npm run start
 
