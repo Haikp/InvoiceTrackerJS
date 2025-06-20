@@ -1,31 +1,35 @@
 :: Windows Exclusive
-@echo off
-:: Set your project path below (adjust this)
-set PROJECT_DIR=E:\Development\Projects\InvoiceTrackerJS
-
+@echo on
+set "PROJECT_DIR=E:\Development\ExportTools\InvoiceTrackerJS"
 cd /d "%PROJECT_DIR%"
+echo Current directory: %CD%
 
-echo Checking for updates...
-git pull > temp_git_output.txt
-findstr /C:"Already up to date." temp_git_output.txt >nul
+echo Checking for git updates...
+git pull | findstr /C:"Already up to date." >nul
 if %errorlevel%==0 (
     echo No updates found.
 ) else (
     echo Updates pulled from git.
-    echo Running fresh build...
-    npm run build
 )
-del temp_git_output.txt
 
 IF NOT EXIST node_modules (
     echo First-time setup: Installing dependencies...
-    npm install
+    call npm install
 )
 
 echo Building the project...
-npm run build
+call npm run build
+echo Build finished with errorlevel %ERRORLEVEL%
+
+if ERRORLEVEL 1 (
+    echo Build failed, exiting batch script.
+    pause
+    exit /b 1
+)
 
 echo Starting the server...
-npm run start &
-timeout /t 2 >nul
-start "" http://localhost:3000
+set NODE_ENV=production
+call npm run start
+
+echo Server stopped or exited.
+pause
