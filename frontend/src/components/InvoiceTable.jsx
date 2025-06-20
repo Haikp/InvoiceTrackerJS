@@ -346,7 +346,6 @@ const InvoiceTable = ({ invoices }) => {
                             </InputGroup>
                         </VStack>
                     </ModalBody>
-
                     <ModalFooter>
                         <Button
                             onClick={() => handleUpdateInvoice(updatedInvoice._id, updatedInvoice)}
