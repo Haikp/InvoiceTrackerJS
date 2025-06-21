@@ -33,7 +33,7 @@ echo Starting the server...
 start "" http://localhost:3000
 
 set NODE_ENV=production
-powershell -NoProfile -ExecutionPolicy Bypass -Command "npm run start"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "npm run windows"
 
 echo Server stopped or exited.
 pause
