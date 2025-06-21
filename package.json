@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "NODE_ENV=development nodemon backend/server.js",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
-    "start": "node backend/server.js"
+    "linux": "NODE_ENV=production node backend/server.js",
+    "windows": "node backend/server.js"
   },
   "type": "module",
   "keywords": [],

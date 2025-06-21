@@ -1,5 +1,7 @@
 :: Windows Exclusive
 @echo off
+setlocal
+
 set "PROJECT_DIR=E:\Development\ExportTools\InvoiceTrackerJS"
 cd /d "%PROJECT_DIR%"
 echo Current directory: %CD%
@@ -14,11 +16,11 @@ if %errorlevel%==0 (
 
 IF NOT EXIST node_modules (
     echo First-time setup: Installing dependencies...
-    call npm install
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "npm install"
 )
 
 echo Building the project...
-call npm run build
+powershell -NoProfile -ExecutionPolicy Bypass -Command "npm run build"
 echo Build finished with errorlevel %ERRORLEVEL%
 
 if ERRORLEVEL 1 (
@@ -29,8 +31,11 @@ if ERRORLEVEL 1 (
 
 echo Starting the server...
 start "" http://localhost:3000
+
 set NODE_ENV=production
-call npm run start
+powershell -NoProfile -ExecutionPolicy Bypass -Command "npm run start"
 
 echo Server stopped or exited.
 pause
+
+endlocal
