@@ -30,28 +30,12 @@ for /f "delims=" %%i in ('powershell -Command "(Invoke-RestMethod -Uri 'https://
 echo Current public IP: %CURRENT_IP%
 
 :: ------------------------------
-:: Update MongoDB Atlas allowlist if needed
+:: Update MongoDB Atlas allowlist if needed (using curl v2 API)
 :: ------------------------------
 echo Checking if IP is already in MongoDB Atlas allowlist...
 
-powershell -NoProfile -Command ^
-  "$ErrorActionPreference = 'Stop';" ^
-  " $publicKey = '$env:ATLAS_PUBLIC_KEY';" ^
-  " $privateKey = '$env:ATLAS_PRIVATE_KEY';" ^
-  " $groupId = '$env:ATLAS_PROJECT_ID';" ^
-  " $currentIp = '%CURRENT_IP%';" ^
-  " $base64Auth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(\"$publicKey`:$privateKey\"));" ^
-  " $uri = \"https://cloud.mongodb.com/api/atlas/v1.0/groups/$groupId/accessList\";" ^
-  " $headers = @{ Authorization = \"Basic $base64Auth\" };" ^
-  " $allowlist = Invoke-RestMethod -Uri $uri -Headers $headers -Method Get;" ^
-  " if ($allowlist.results.ipAddress -contains $currentIp) {" ^
-  "   Write-Output 'IP already in allowlist. Skipping update.';" ^
-  " } else {" ^
-  "   Write-Output 'IP not found, adding to allowlist...';" ^
-  "   $body = @([pscustomobject]@{ ipAddress = $currentIp; comment = 'Auto-updated IP' }) | ConvertTo-Json;" ^
-  "   Invoke-RestMethod -Uri $uri -Headers $headers -Method Post -Body $body -ContentType 'application/json';" ^
-  "   Write-Output 'IP added successfully.';" ^
-  " }"
+powershell -NoProfile -ExecutionPolicy Bypass -File updateAtlasAllowlist.ps1 ^
+  -publicKey "%ATLAS_PUBLIC_KEY%" -privateKey "%ATLAS_PRIVATE_KEY%" -groupId "%ATLAS_PROJECT_ID%" -currentIp "%CURRENT_IP%"
 
 :: ------------------------------
 :: Continue with normal operations

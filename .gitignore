@@ -58,3 +58,4 @@ frontend/build/
 # Optional: Ignore backend production output
 backend/dist/
 
+curl_log.txt
