@@ -1,26 +1,44 @@
 @echo off
-setlocal
+setlocal EnableDelayedExpansion
 
+:: ------------------------------
+:: Load Atlas credentials from .env
+:: ------------------------------
+echo Loading MongoDB Atlas credentials from .env...
+if not exist ".env" (
+    echo Error: .env file not found in %CD%
+    pause
+    exit /b 1
+)
+
+for /f "tokens=1,* delims==" %%A in ('type ".env"') do (
+    set "%%A=%%B"
+)
+
+:: ------------------------------
+:: Set project directory
+:: ------------------------------
 set "PROJECT_DIR=E:\Development\ExportTools\InvoiceTrackerJS"
 cd /d "%PROJECT_DIR%"
 echo Current directory: %CD%
 
-:: Atlas API credentials
-set "ATLAS_PUBLIC_KEY=your_public_key_here"
-set "ATLAS_PRIVATE_KEY=your_private_key_here"
-set "ATLAS_PROJECT_ID=your_project_id_here"
-
+:: ------------------------------
+:: Get current public IP
+:: ------------------------------
 echo Checking current public IP...
 for /f "delims=" %%i in ('powershell -Command "(Invoke-RestMethod -Uri 'https://api.ipify.org?format=json').ip"') do set "CURRENT_IP=%%i"
 echo Current public IP: %CURRENT_IP%
 
+:: ------------------------------
+:: Update MongoDB Atlas allowlist if needed
+:: ------------------------------
 echo Checking if IP is already in MongoDB Atlas allowlist...
 
 powershell -NoProfile -Command ^
   "$ErrorActionPreference = 'Stop';" ^
-  " $publicKey = '%ATLAS_PUBLIC_KEY%';" ^
-  " $privateKey = '%ATLAS_PRIVATE_KEY%';" ^
-  " $groupId = '%ATLAS_PROJECT_ID%';" ^
+  " $publicKey = '$env:ATLAS_PUBLIC_KEY';" ^
+  " $privateKey = '$env:ATLAS_PRIVATE_KEY';" ^
+  " $groupId = '$env:ATLAS_PROJECT_ID';" ^
   " $currentIp = '%CURRENT_IP%';" ^
   " $base64Auth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(\"$publicKey`:$privateKey\"));" ^
   " $uri = \"https://cloud.mongodb.com/api/atlas/v1.0/groups/$groupId/accessList\";" ^
@@ -35,8 +53,9 @@ powershell -NoProfile -Command ^
   "   Write-Output 'IP added successfully.';" ^
   " }"
 
-:: continue with your original batch file stuff
-
+:: ------------------------------
+:: Continue with normal operations
+:: ------------------------------
 echo Checking for git updates...
 git pull | findstr /C:"Already up to date." >nul
 if %errorlevel%==0 (
