@@ -1,7 +1,3 @@
-Following resources at the moment to get a handle on full stack development, I don't have much experience in javascript in general, so this will probably take a lot longer than normal to get this done. Hopefully, by the end of going through all the resources, I'll be proficient enough to create something thats practical, but also decently safe and secure. Not sure how much about the security aspect that's in the resource, but hopefully there's something in there about it.
-
-This project uses npm, simply run npm install to install the packages.
-
 # Invoice Tracker
 This was a commissioned project, and my first time using JS to make a website.
 
@@ -32,7 +28,7 @@ You will need to get an API Key to allow automatic IP address whitelisting (if y
 - on the left side, click on access manager
 - on the right side, swap to project access manager settings
 - switch to the applications tab > API Keys, and create API Key
-- set a name, and the minimum permissions required is 'Project Read Only'
+- set a name, and 'project owner' permissions is needed
 - get the public and private key for later use
 You will also need the Project ID
 - click on 'Atlas' top left to view all your projects
@@ -41,6 +37,13 @@ You will also need the Project ID
 ### 4. Create .env File
 Inside, use variable names MONGO_URI, PORT, ATLAS_PUBLIC_KEY, ATLAS_PRIVATE_KEY, and ATLAS_PROJECT_ID respectively
 - Note: the atlas public key, private key, and project id is mainly for if you want to use the script, the script is also only for windows, if you want to use this project on other platforms, you just need to whitelist your own ip address in your project.
+```bash
+MONGO_URI=mongodb+srv://...
+PORT=desired port number
+ATLAS_PUBLIC_KEY=publickey
+ATLAS_PRIVATE_KEY=privatekey
+ATLAS_PROJECT_ID=projectid
+```
 
 ### 6. Run Build
 if on linux:

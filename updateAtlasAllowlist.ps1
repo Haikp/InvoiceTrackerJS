@@ -45,14 +45,14 @@ if ($allowlist.results.ipAddress -contains $currentIp) {
     $payloadJson | Out-File -Encoding utf8 -FilePath $jsonFile -Force
     
     # Show payload (optional)
-    Write-Host "`nPayload JSON:"
-    Get-Content $jsonFile
+    # Write-Host "`nPayload JSON:"
+    # Get-Content $jsonFile
     
     # Call curl with data from file
-    & curl.exe --trace-ascii "curl_log.txt" --digest --user $auth `
+    $null = & curl.exe --trace-ascii "curl_log.txt" --digest --user $auth `
       --header "Content-Type: application/json" `
       --header "Accept: application/vnd.atlas.2025-03-12+json" `
-      -X POST "https://cloud.mongodb.com/api/atlas/v2/groups/$groupId/accessList" `
+      "https://cloud.mongodb.com/api/atlas/v2/groups/$groupId/accessList" `
       --data "@$jsonFile"
 
 
