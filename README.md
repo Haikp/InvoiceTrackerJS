@@ -5,8 +5,7 @@ This was a commissioned project, and my first time using JS to make a website.
 - Node.js v18.19.1
 - [Node.js](https://nodejs.org/) (version 18.19.1 or higher)
 - npm (comes with Node.js) or [Yarn](https://yarnpkg.com/) (optional)
-- A local MongoDB instance running on your PC
-  (This project connects directly to your local MongoDB database.)
+- Drivers installation version of MongoDB
 
 ## Getting Started
 
@@ -22,6 +21,12 @@ npm run build
 ```
 
 ### 3. Create New Cluster on MongoDB
+When creating a new cluster, select the Driver version for Mongo installation, create the credentials and make sure to copy the Mongo_URI
+- using npm
+- ```bash
+  npm install mongodb
+  ```
+
 You will need to get an API Key to allow automatic IP address whitelisting (if you are using the .bat script on windows)
 - click on your profile on the top right > organizations
 - select your organization
